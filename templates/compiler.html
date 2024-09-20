@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta tags for character encoding, compatibility, and responsive design -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Page description and author (can be customized) -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Favicon for the webpage -->
+    <link rel="icon" href="../../favicon.ico">
+
+    <!-- Title of the webpage -->
+    <title>Online Compiler</title>
+
+    <!-- Bootstrap CSS for styling and layout -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- Custom CSS for additional styling -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .editor {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .code-editor, .input-editor, .output-box {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .editor-label {
+            font-weight: bold;
+        }
+
+        .textarea {
+            width: 100%;
+            height: 200px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: vertical;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #output {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            height: 200px;
+            overflow-y: auto;
+        }
+
+        .navbar {
+            margin-bottom: 0;
+            border-radius: 0;
+        }
+
+        .navbar-brand {
+            font-size: 24px;
+            padding: 10px 15px;
+        }
+
+        .navbar-brand img {
+            display: inline-block;
+            height: 40px;
+        }
+    </style>
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+    <!-- Bootstrap JavaScript for interactive components -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+    <!-- Script to handle the Tab key in the code textarea -->
+    <script type="text/javascript">
+        if (!window.jQuery) {
+            console.log("jQuery has not loaded");
+        }
+
+        // Delegate event to handle Tab key for indentation in the code textarea
+        $(document).delegate('#code', 'keydown', function (e) {
+            var keyCode = e.keyCode || e.which;
+
+            if (keyCode == 9) { // If Tab key is pressed
+                e.preventDefault(); // Prevent default Tab key behavior
+                var start = $(this).get(0).selectionStart;
+                var end = $(this).get(0).selectionEnd;
+
+                // Insert a tab character at the caret position
+                $(this).val($(this).val().substring(0, start) + "\t" + $(this).val().substring(end));
+
+                // Move caret to the right position after the tab character
+                $(this).get(0).selectionStart =
+                    $(this).get(0).selectionEnd = start + 1;
+            }
+        });
+    </script>
+</head>
+<body>
+    <!-- Navbar for branding and navigation -->
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <!-- Brand logo and name -->
+                <a class="navbar-brand" href="#">
+                    <img alt="Brand" src="{{ url_for('static', filename='logo.png') }}"> Online Compiler
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main container for the editor and output -->
+    <div class="container">
+        <div class="editor">
+            <!-- Code editor section -->
+            <div class="code-editor">
+                <label for="code" class="editor-label">Code</label>
+                <textarea class="textarea" id="code" name="code" placeholder="Write your code"></textarea>
+            </div>
+            <!-- Input editor section -->
+            <div class="input-editor">
+                <label for="input" class="editor-label">Input</label>
+                <textarea class="textarea" id="input" name="input"></textarea>
+            </div>
+            <!-- Language selection dropdown -->
+            <div class="form-group">
+                <label for="lang" class="editor-label">Language</label>
+                <select class="form-control" id="lang" name="lang">
+                    <option value="python">Python</option>
+                    <option value="python3">Python3</option>
+                    <option value="c">C</option>
+                    <option value="cpp">C++</option>
+                    <option value="java">Java</option>
+                </select>
+            </div>
+            <!-- Run button to execute the code -->
+            <button type="submit" class="btn" id="run-btn">Run</button>
+            <!-- Output display section -->
+            <div class="output-box">
+                <label for="output" class="editor-label">Output</label>
+                <pre id="output"></pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom JavaScript to handle code execution -->
+    <script>
+        document.getElementById('run-btn').addEventListener('click', function() {
+            // Get code, input, and selected language
+            var code = document.getElementById('code').value;
+            var input = document.getElementById('input').value;
+            var lang = document.getElementById('lang').value;
+
+            // Create a request body with the code, input, and language
+            var requestBody = {
+                code: code,
+                input: input,
+                language: lang
+            };
+
+            // Make a POST request to the /run endpoint
+            fetch('/run', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestBody) // Send request body as JSON
+            })
+            .then(response => response.json()) // Parse the response as JSON
+            .then(data => {
+                // Display the output in the output box
+                document.getElementById('output').textContent = data.output;
+            })
+            .catch(error => {
+                // Display any error in the output box
+                document.getElementById('output').textContent = 'Error: ' + error;
+            });
+        });
+    </script>
+</body>
+</html>
+<!--
+Explanation of the Code:
+Meta Tags and Favicon: These elements provide information about the webpage, such as character encoding, compatibility, viewport settings, and the favicon.
+
+CSS and JavaScript Includes: Bootstrap CSS and JavaScript, along with jQuery, are included to provide styling and interactive functionality. Custom CSS is used for additional styling.
+
+Navbar: Contains the brand logo and name of the online compiler.
+
+Main Container: Holds the code editor, input editor, language selector, run button, and output display.
+
+JavaScript for Tab Key Handling: This script allows users to use the Tab key for indentation in the code editor.
+
+Custom JavaScript for Code Execution: This script captures the code, input, and selected language, sends them to the server using a POST request, and displays the server response in the output box. -->

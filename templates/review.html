@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        /* review.css */
+.review-section {
+    margin-top: 20px;
+}
+
+.rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+}
+
+.rating input[type="radio"] {
+    display: none;
+}
+
+.rating label {
+    font-size: 24px;
+    color: #ffd700;
+    cursor: pointer;
+}
+
+.rating label:hover {
+    color: #ffe400;
+}
+
+.reviews {
+    margin-top: 20px;
+}
+
+.review {
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.review span.rating {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffd700;
+}
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+</head>
+<body>
+     <!-- review.html -->
+<div class="review-section">
+    <h2>Leave a Review</h2>
+    <form method="POST">
+        <div class="rating">
+            <input type="radio" id="star5" name="rating" value="5">
+            <label for="star5">5 stars</label>
+            <input type="radio" id="star4" name="rating" value="4">
+            <label for="star4">4 stars</label>
+            <input type="radio" id="star3" name="rating" value="3">
+            <label for="star3">3 stars</label>
+            <input type="radio" id="star2" name="rating" value="2">
+            <label for="star2">2 stars</label>
+            <input type="radio" id="star1" name="rating" value="1">
+            <label for="star1">1 star</label>
+        </div>
+        <textarea name="comment" placeholder="Write your review here..."></textarea>
+        <button type="submit">Submit Review</button>
+    </form>
+    <div class="reviews">
+        {% for review in reviews %}
+        <div class="review">
+            <span class="rating">{{ review.rating }} stars</span>
+            <p>{{ review.comment }}</p>
+            <p>— {{ review.user.username }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+</body>
+</html>

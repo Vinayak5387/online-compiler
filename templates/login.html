@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        *{
+            font-family: f-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-se ;
+        }
+        body {
+            background-image: url("static/image/BackGround.jpg");
+            background-color: #2c2f33;
+            background-repeat: no-repeat;
+            background-size: 100%;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            background-color: #36393f00;
+            border-radius: 10px;
+            overflow: hidden;
+            max-width: 1200px;
+        }
+        .left {
+            background-color: #00000000;
+            border-radius: 10px;
+        }
+        .right {
+            background-color: rgba(255, 255, 255, 0.138);
+            color: #000;
+            border-radius: 20px;
+            margin-left: 200px;
+            max-width: 400px;
+            max-height: 90%;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            box-shadow: 0px, 0px, 16px 0px rgba(255, 255, 255, 0.153);;
+
+        }
+        .logo img {
+            width: 175px;
+        }
+        .heart {
+            color: #00a650;
+        }
+        .rocket img {
+            width: 100%;
+            max-width: 150px;
+            display: block;
+            margin: 30px 0 0;
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container d-flex">
+            <div class="left p-5 col-md-6">
+            <div class="logo_class">
+                <div class="logo mb-4">
+                    <img src="static/image/FInal.png" alt="Logo">
+                </div>
+             </div>
+            <h1>Become a <br>OnlyCoderer <span class="heart">💙</span></h1>
+            <p>Free to use, easy to love</p>
+            <ul class="list-unstyled">
+                <li><i class="fa-solid fa-circle-check" style="color: #6ba1ff;"></i> Track your progress</li>
+                <li><i class="fa-solid fa-circle-check" style="color: #6ba1ff;"></i> Set your goals</li>
+                <li><i class="fa-solid fa-circle-check" style="color: #6ba1ff;"></i> Get a personalized learning path</li>
+                <li><i class="fa-solid fa-circle-check" style="color: #6ba1ff;"></i> Test your skills</li>
+                <li><i class="fa-solid fa-circle-check" style="color: #6ba1ff;"></i> Practice coding in browser</li>
+                <li><i class="fa-solid fa-circle-check" style="color: #6ba1ff;"></i> Build and host a website</li>
+                <li><i class="fa-solid fa-circle-check" style="color: #6ba1ff;"></i> Match with relevant jobs</li>
+            </ul>
+            <div class="rocket">
+                <img src="static/image/plan.png" alt="Rocket">
+            </div>
+        </div>
+        <div class="right p-5 col-md-6" >
+            <h2>Log In</h2>
+            
+            <form method="POST" action="{{ url_for('login') }}">
+                {{ form.hidden_tag() }}
+                <div class="form-group">
+                    {{ form.email.label(class="form-label") }}
+                    {{ form.email(class="form-control") }}
+                </div>
+                <div class="form-group">
+                    {{ form.password.label(class="form-label") }}
+                    {{ form.password(class="form-control") }}
+                </div>
+                <button type="submit" class="btn btn-success w-100">{{ form.submit.label }}</button>
+            </form>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <ul class="list-unstyled mt-3">
+                        {% for category, message in messages %}
+                            <li class="alert alert-{{ category }}">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

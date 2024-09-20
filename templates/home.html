@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Home</title>
+    <style>
+        * {
+            font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+        }
+        body {
+            background-image: url('static/image/BackGround.jpg');
+            background-color: #2c2f33;
+            background-repeat: no-repeat;
+            background-size: cover;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .navbar {
+            display: flex;
+            height: 4vh;
+            /* margin: 10px; */
+            /* border-radius: 20px; */
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.138);
+            padding: 10px 20px;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            z-index: 10; /* Added z-index to navbar */
+        }
+        .nav_logo{
+            height: 9px;
+            width: 9px;
+        }
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            margin-right: 15px;
+            position: relative;
+        }
+        .navbar .navbar-links a {
+            /* margin-right: 50px;  */
+            margin-left: 50px;/* Adjust the value as needed */
+        }
+
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            opacity: 0; /* Hidden by default */
+            visibility: hidden; /* Hidden by default */
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.138);
+            min-width: 160px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1000; /* Ensure it's above other elements */
+            border-radius: 10px;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            margin-top: 35px; /* Adjust if necessary */
+            transition: opacity 0.3s ease, visibility 0.3s ease; /* Smooth transition for appearance */
+        }
+
+        .dropdown:hover .dropdown-content {
+            opacity: 1; /* Show dropdown */
+            visibility: visible; /* Make it visible */
+            transition-delay: 0s; /* Delay the appearance */
+        }
+
+        /* Optionally, if you want to hide the dropdown with a delay after hovering out */
+        .dropdown .dropdown-content {
+            transition-delay: 0s; /* No delay when hiding */
+        }
+
+        .dropdown-content a{
+            margin-bottom: 50px;
+        }
+        .dropdown-content a:hover {
+
+            background-color: rgba(40, 167, 83, 0.3);
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .dropdown-content a {
+    color: #fff;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    margin: 5px 0; /* Adjust the top and bottom margin as needed */
+}
+
+
+        .navbar .search-bar {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .search-bar input {
+            padding: 5px;
+            border: none;
+            border-radius: 3px;
+        }
+
+        .navbar .search-bar button {
+            padding: 5px 10px;
+            margin-left: 5px;
+            border: none;
+            border-radius: 3px;
+            background-color: #28a745;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .main-container {
+            display: flex;
+            height: 100%;
+            flex-grow: 1;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background-color: rgba(255, 255, 255, 0.138);
+            /* margin: 10px; */
+            /* border-radius: 20px; */
+            padding: 20px;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+        }
+
+        .buttons {
+            padding: 10px 20px;
+            background: #ffffff55;
+            border: none;
+            color: #f0f0f0;
+            border-radius: 5px;
+            height: 40px;
+            width: 160px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background 0.3s ease, color 0.3s ease, box-shadow 0.5s ease 0.1s, border-radius 0.3s ease;
+            text-decoration: none;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .buttons:hover {
+            color: #fff;
+            box-shadow: 0 0 15px #285ba7, 0 0 15px #288ea7, 0 0 20px #28a783;
+        }
+
+        .bodyy {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .wrapper {
+            height: 100%;
+            display: grid;
+            place-items: center;
+        }
+
+        .typing-demo {
+            display: inline-block;
+            font-size: 3em;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 3px solid;
+            animation: blink-caret 0.75s step-end infinite;
+            width: 35ch;
+        }
+
+        .typing-demo div {
+            display: block;
+            overflow: hidden;
+            white-space: nowrap;
+            visibility: hidden;
+            width: 35ch;
+        }
+
+        .typing-demo .line1 {
+            visibility: visible;
+            animation: typing1 2.5s steps(22, end) 1s forwards, blink-caret 0.75s step-end infinite;
+        }
+
+        .typing-demo .line2 {
+            animation: typing2 2.5s steps(22, end) 4s forwards, blink-caret 0.75s step-end infinite;
+        }
+
+        .typing-demo .line3 {
+            animation: typing3 1s steps(6, end) 6.5s forwards, blink-caret 0.75s step-end infinite;
+        }
+
+        .typing-demo .line4 {
+            animation: typing4 2.5s steps(22, end) 8s forwards, blink-caret 0.75s step-end infinite;
+        }
+
+        .typing-demo .line5 {
+            animation: typing5 2.5s steps(22, end) 10.5s forwards, blink-caret 0.75s step-end infinite;
+        }
+
+        .typing-demo .line6 {
+            animation: typing6 4s steps(29, end) 13s forwards, blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing1 {
+            from { width: 0; }
+            to { width: 19ch; }
+        }
+
+        @keyframes typing2 {
+            from { width: 0; visibility: hidden; }
+            to { width: 17ch; visibility: visible; }
+        }
+
+        @keyframes typing3 {
+            from { width: 0; visibility: hidden; }
+            to { width: 6ch; visibility: visible; }
+        }
+
+        @keyframes typing4 {
+            from { width: 0; visibility: hidden; }
+            to { width: 20ch; visibility: visible; }
+        }
+
+        @keyframes typing5 {
+            from { width: 0; visibility: hidden; }
+            to { width: 18ch; visibility: visible; }
+        }
+
+        @keyframes typing6 {
+            from { width: 0; visibility: hidden; }
+            to { width: 35ch; visibility: visible; }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: rgba(0, 0, 0, 0); }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="navbar-links">
+                <a href="#">Home</a>
+            <a href="#">Link</a>
+            <div class="dropdown">
+                <a href="#">Tutorials</a>
+                <div class="dropdown-content">
+                    <a href="#">C</a>
+                    <a href="#">C++</a>
+                    <a href="#">Python</a>
+                </div>
+            </div>
+            <a href="#">Disabled</a>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="sidebar">
+            <button type="button" class="buttons">+ Create Code</button>
+            <button type="button" class="buttons">Home</button>
+            <button type="button" class="buttons"><a href="compiler" style="color: inherit; text-decoration: none;">Compiler</a></button>
+            <button type="button" class="buttons">Learn</button>
+            <div class="bottom-buttons">
+                <button type="button" class="buttons"><a href="login" style="color: inherit; text-decoration: none;">Log in</a></button>
+                <button type="button" class="buttons"><a href="register" style="color: inherit; text-decoration: none;">Sign in</a></button>
+            </div>
+        </div>
+
+        <div class="bodyy">
+            <div class="wrapper">
+                <div class="typing-demo">
+                    <div class="line1">Programming is like</div>
+                    <div class="line2">writing a book...</div>
+                    <div class="line3">except</div>
+                    <div class="line4">if you miss a single</div>
+                    <div class="line5">comma on page 126,</div>
+                    <div class="line6">the whole thing makes no sense.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+
+

@@ -1,0 +1,37 @@
+<!-- templates/reviews.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reviews</title>
+</head>
+<body>
+    <h1>Compiler Reviews</h1>
+    <form method="POST" action="{{ url_for('reviews') }}">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.comment.label }}<br>
+            {{ form.comment(size=32) }}<br>
+        </div>
+        <div>
+            {{ form.rating.label }}<br>
+            {{ form.rating(size=32) }}<br>
+        </div>
+        <div>
+            {{ form.submit() }}
+        </div>
+    </form>
+
+    <h2>Reviews:</h2>
+    <ul>
+        {% for review in reviews %}
+            <li>
+                <strong>{{ review.name }}</strong>: {{ review.comment }} (Rating: {{ review.rating }})
+            </li>
+        {% endfor %}
+    </ul>
+
+    <a href="{{ url_for('home') }}">Back to Home</a>
+</body>
+</html>
